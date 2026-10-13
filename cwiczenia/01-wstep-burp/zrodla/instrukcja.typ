@@ -8,6 +8,15 @@
 #let sans-head = ("Inter", "Segoe UI", "Arial")
 #let mono = ("Cascadia Mono", "Consolas")
 
+// diagramy (fletcher)
+#import "@preview/fletcher:0.5.8" as fletcher: diagram, node, edge
+#let dnode(pos, body, fill: accent-light, stroke: accent, ..a) = node(
+  pos, align(center, text(font: sans-head, body)),
+  fill: fill, stroke: 0.9pt + stroke, inset: 9pt, corner-radius: 3pt, ..a,
+)
+#let dtag(body) = text(font: sans-head, size: 8pt, fill: muted, body)
+#let dedge(..a) = edge(stroke: 0.9pt + accent, ..a)
+
 #set document(title: "Pierwsze kroki z Burp Suite", author: "BSI")
 #set page(
   paper: "a4",
@@ -93,6 +102,8 @@
   )
   align(center, block(width: width, fig(none)))
 }
+#let rysunek(body, cap, width: 100%) = align(center, block(width: width,
+  figure(body, caption: cap, supplement: [Rysunek], kind: "rysunek")))
 #show figure: set block(above: 1.2em, below: 1.2em)
 #show figure.caption: it => {
   set text(size: 8.5pt, fill: muted)
@@ -164,6 +175,19 @@ testująca może w Burpie zmienić w żądaniu dowolne dane, także takie, któr
 pozwala edytować. Serwer otrzymuje wyłącznie samo żądanie i nie może ustalić, czy dane pochodzą
 z interfejsu. Jeśli przyjmuje je bez weryfikacji, w aplikacji występuje podatność.
 
+#rysunek(diagram(
+  spacing: (2.6cm, 1.3cm),
+  dnode((0, 0), [Przeglądarka]),
+  dnode((1, 0), [Burp\ (proxy)]),
+  dnode((2, 0), [Serwer]),
+  dedge((0, 0), (1, 0), dtag[żądanie], "-|>", bend: 28deg, label-side: left),
+  dedge((1, 0), (2, 0), dtag[żądanie], "-|>", bend: 28deg, label-side: left),
+  dedge((2, 0), (1, 0), dtag[odpowiedź], "-|>", bend: 28deg, label-side: left),
+  dedge((1, 0), (0, 0), dtag[odpowiedź], "-|>", bend: 28deg, label-side: left),
+), [Każde żądanie i każda odpowiedź przechodzą przez Burpa. W punkcie przechwytywania
+(_Intercept_) między przeglądarką a Burpem osoba testująca może zmienić dowolne dane żądania.
+Serwer otrzymuje samo żądanie i nie rozpoznaje, czy dane pochodzą z interfejsu aplikacji.])
+
 == Budowa żądania i odpowiedzi HTTP
 
 Żądanie HTTP składa się z wiersza żądania (metoda, ścieżka, wersja protokołu, np.
@@ -202,6 +226,21 @@ skanera podatności i nie zapisuje projektu na dysk, a _Intruder_ (narzędzie do
 zautomatyzowanych serii żądań) działa w niej z ograniczoną szybkością. Żadna z tych funkcji nie
 jest potrzebna w ćwiczeniu.
 
+#rysunek(diagram(
+  spacing: (0.9cm, 1.2cm),
+  dnode((1, 0), [Co chcesz zrobić?], fill: white, stroke: muted),
+  dnode((0, 1), [_HTTP history_]),
+  dnode((1, 1), [_Repeater_]),
+  dnode((2, 1), [_Intercept_]),
+  dedge((1, 0), (0, 1), "-|>"),
+  dedge((1, 0), (1, 1), "-|>"),
+  dedge((1, 0), (2, 1), "-|>"),
+  node((0, 2), dtag[obejrzeć ruch,\ zbudować mapę], stroke: none),
+  node((1, 2), dtag[powtórzyć żądanie\ i zmienić parametr], stroke: none),
+  node((2, 2), dtag[zmienić żądanie\ przed wysłaniem\ (znaleziska 6 i 7)], stroke: none),
+), [Wybór narzędzia Burpa. _Intercept_ jest potrzebny tylko wtedy, gdy trzeba zmienić żądanie
+powstające jednym kliknięciem; w pozostałych testach wystarczają _HTTP history_ i _Repeater_.])
+
 = Uruchomienie aplikacji
 
 W katalogu aplikacji wykonaj polecenia:
@@ -230,6 +269,16 @@ Konta testowe:
 
 W ćwiczeniu loguje się wyłącznie konto `alice`. Konta `bob` i `admin` są celem testów. Z konta
 `alice` próbuje się uzyskać ich dane i uprawnienia.
+
+#rysunek(diagram(
+  spacing: (3cm, 1.9cm),
+  dnode((1, 0), [*admin*\ administrator], fill: warn-light, stroke: warn),
+  dnode((0, 1), [*alice*\ atakujący], fill: accent-light, stroke: accent),
+  dnode((2, 1), [*bob*\ ten sam poziom]),
+  dedge((0, 1), (2, 1), dtag[eskalacja pozioma (IDOR, znalezisko 2)], "-|>", label-side: right),
+  edge((0, 1), (1, 0), dtag[eskalacja pionowa\ (znaleziska 1 i 3)], "-|>", stroke: 0.9pt + warn, label-side: left),
+), [Konto `alice` należy do osoby testującej. Uzyskanie danych konta `bob` o tych samych
+uprawnieniach to eskalacja pozioma, a zdobycie uprawnień administratora to eskalacja pionowa.])
 
 = Pierwsze uruchomienie Burpa
 
@@ -339,6 +388,19 @@ opisanych w instrukcji.
   Ctrl+R). Przejdź do zakładki _Repeater_. Po lewej stronie znajduje się żądanie, które można
   edytować, a po prawej odpowiedź. Przycisk _Send_ wysyła żądanie.
 ]
+
+#rysunek(diagram(
+  spacing: (3.2cm, 1.4cm),
+  dnode((0, 0), [Wyślij]),
+  dnode((1, 0), [Zmień jeden\ parametr]),
+  dnode((1, 1), [Wyślij\ ponownie]),
+  dnode((0, 1), [Porównaj\ odpowiedź]),
+  dedge((0, 0), (1, 0), "-|>"),
+  dedge((1, 0), (1, 1), "-|>"),
+  dedge((1, 1), (0, 1), "-|>"),
+  dedge((0, 1), (0, 0), "-|>"),
+), [Pętla pracy w _Repeaterze_: po zmianie jednego parametru żądanie wysyła się ponownie
+przyciskiem _Send_ i porównuje odpowiedź z poprzednią.])
 
 Znalezisko jest potwierdzone, gdy odpowiedź serwera albo stan aplikacji odczytany kolejnym
 żądaniem potwierdza skutek, np. ujawnienie cudzych danych, wykonanie akcji administratora albo

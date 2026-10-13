@@ -122,15 +122,6 @@ Po zakończeniu ćwiczenia student potrafi:
 - rozpoznać błędy uwierzytelniania, kontroli dostępu i logiki biznesowej (rozdziały 8–13),
 - opisać znalezisko w formie przyjętej w raporcie z testu penetracyjnego.
 
-Ćwiczenie trwa 90 minut. Oprogramowanie wymienione w rozdziale~0 należy zainstalować przed
-zajęciami. Orientacyjny podział czasu: rozdziały 0–7 około 30 minut, znaleziska 1–8 około
-40 minut, opis znalezisk i pytania kontrolne około 20 minut.
-
-Wynikiem ćwiczenia jest raport zawierający opis ośmiu znalezisk według schematu z rozdziału~14.
-W trakcie zajęć należy wykonać wszystkie testy, zapisać dowody (żądanie i odpowiedź z _Repeatera_)
-i opisać w pełni co najmniej dwa znaleziska. Pozostałe opisy należy uzupełnić po zajęciach,
-w terminie i formie podanych przez prowadzącego.
-
 Test penetracyjny to kontrolowana próba ataku na system, prowadzona w celu wykrycia podatności.
 Wymaga on pisemnej zgody właściciela systemu, określającej zakres i termin testów. Te same
 czynności wykonane bez zgody mogą stanowić przestępstwo (art. 267 Kodeksu karnego). Ćwiczenie

@@ -135,7 +135,7 @@ i systemy AGH.
 
 = Wymagania
 
-#block(sticky: true)[Przed zajęciami należy zainstalować następujące oprogramowanie:]
+#block(sticky: true)[Do wykonania ćwiczenia potrzebne jest następujące oprogramowanie:]
 
 - *Python 3.12 lub nowszy*, pobierany ze strony
   #link("https://www.python.org/downloads/")[python.org/downloads]. W systemie Windows podczas
@@ -147,10 +147,10 @@ i systemy AGH.
 - *Przeglądarka*: Burp Suite zawiera wbudowaną przeglądarkę Chromium, która wystarcza do
   ćwiczenia. Jako rozwiązanie zapasowe (rozdział~4) można użyć przeglądarki Firefox, pobieranej
   ze strony #link("https://www.mozilla.org/firefox/")[mozilla.org/firefox].
-- *Plik aplikacji* `app.py`, udostępniony przez prowadzącego.
+- *Plik aplikacji* `app.py`, znajdujący się w katalogu ćwiczenia.
 
 Pakiety Pythona potrzebne do uruchomienia aplikacji instaluje się poleceniem opisanym
-w rozdziale~2. Polecenie to również należy wykonać przed zajęciami.
+w rozdziale~2.
 
 = Czym jest Burp i do czego służy proxy
 

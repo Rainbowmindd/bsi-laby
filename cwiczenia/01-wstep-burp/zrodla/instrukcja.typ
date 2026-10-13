@@ -35,6 +35,8 @@
 // rozdzialy od 0
 #set heading(numbering: (..n) => numbering("1.", n.pos().first() - 1, ..n.pos().slice(1)))
 #show heading.where(level: 1): it => {
+  // kazdy rozdzial (i spis tresci) od nowej strony
+  pagebreak(weak: true)
   set text(font: sans-head, size: 14pt, weight: "semibold", fill: ink)
   block(above: 1.6em, below: 0.75em, sticky: true, width: 100%)[
     #if it.numbering != none [

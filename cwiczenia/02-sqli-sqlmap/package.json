@@ -1,0 +1,13 @@
+{
+  "name": "sqli-sqlmap",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node app.mjs"
+  },
+  "dependencies": {
+    "@electric-sql/pglite": "^0.2.0",
+    "express": "^4.21.0"
+  }
+}
